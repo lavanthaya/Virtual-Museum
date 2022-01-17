@@ -1,0 +1,118 @@
+<!--
+Capstone Project/Final Assignment
+COMP 4302/6909
+
+Team: Lavan (201990251), Fatemeh (201892956)
+Theam: A virtual-museum walk-through type of environment (allows for a virtual tour)
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>Museum</title>
+		<link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
+
+		<script id="vertex-shader" type="x-shader/x-vertex">
+
+			attribute vec4 vPosition;
+			attribute vec4 vNormal;
+			attribute vec2 vTexCoord;
+
+			varying vec4 vLightWeighting;
+			varying vec2 fTexCoord;
+
+			uniform vec4 vAmbientProduct, vDiffuseProduct, vSpecularProduct, vLightColor;
+			uniform vec3 lightPosition;
+			uniform mat4 matrix;
+
+		    void main(void) {
+		    	vec4 norm = matrix * vNormal;
+
+	            vec3 lightDirection = normalize(lightPosition - vPosition.xyz);
+
+	            vec4 transformedNormal = vNormal;
+	            float directionalLightWeighting = max(dot(transformedNormal.xyz, lightDirection), 0.0);
+	            vLightWeighting = vAmbientProduct + vDiffuseProduct + vSpecularProduct + vLightColor * directionalLightWeighting;
+
+      	        fTexCoord = vTexCoord;
+      	        gl_Position = matrix * vPosition;
+		    }
+		</script>
+
+		<script id="fragment-shader" type="x-shader/x-fragment">
+
+			precision mediump float;
+
+			uniform sampler2D texture;
+                  uniform vec4 vColor;
+
+			varying vec4 vLightWeighting;
+			varying vec2 fTexCoord;
+
+			void main() {
+      			gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
+			}
+
+		</script>
+		
+		<script type="text/javascript" src="common/webgl-utils.js"></script>
+		<script type="text/javascript" src="common/initShaders.js"></script>
+		<script type="text/javascript" src="common/MV.js"></script>
+		<script type="text/javascript" src="src/vars.js"></script>
+		<script type="text/javascript" src="src/textures.js"></script>
+		<script type="text/javascript" src="src/map.js"></script>
+		<script type="text/javascript" src="src/museum.js"></script>
+
+	</head>
+
+        
+    <body onload="bodyLoaded()">
+      
+      <canvas id="gl-canvas" width="960" height="540">
+        Your browser doesn't support the HTML5 canvas element
+      </canvas>
+      
+	  <img id='welcome.png' src='img/welcome.png' hidden/>
+      <img id='instructions.png' src='img/instructions.png' hidden/>
+
+      <img id='lobby-carpet.png' src='img/lobby-carpet.png' hidden/>
+      <img id='marble-tile.png' src='img/marble-tile.png' hidden/>
+	  <img id='creepy-floor.png' src='img/creepy-floor.png' hidden/>
+      <img id='wood-floor.png' src='img/wood-floor.png' hidden/>
+      <img id='stained-wood.png' src='img/stained-wood.png' hidden/>
+      
+      <img id='diamond-paper.png' src='img/diamond-paper.png' hidden/>
+	  <img id='hall-ceiling.png' src='img/hall-ceiling.png' hidden/>
+	  <img id='wood-ceiling.png' src='img/wood-ceiling.png' hidden/>
+      <img id='circles.png' src='img/circles.png' hidden/>
+      <img id='marble.png' src='img/marble.png' hidden/>
+      <img id='wood.png' src='img/wood.png' hidden/>
+      <img id='door.jpg' src='img/door.jpg' hidden/>
+      <img id='wondering-woman.png' src='img/wondering-woman.png' hidden/>
+      <img id='plaid.png' src='img/plaid.png' hidden/>
+      <img id='lobby.png' src='img/lobby.png' hidden/>
+      <img id='elevator.png' src='img/elevator.png' hidden/>
+      <img id='elevator-wall.png' src='img/elevator-wall.png' hidden/>
+      <img id='notice.png' src='img/notice.png' hidden/>
+      
+      <!-- Wall Arts -->
+      <img id='room1_art1.png' src='img/room1_art1.png' hidden/>
+      <img id='room1_art2.png' src='img/room1_art2.png' hidden/>
+      <img id='room1_art3.png' src='img/room1_art3.png' hidden/>
+      <img id='room2_art1.png' src='img/room2_art1.png' hidden/>
+      <img id='room2_art2.png' src='img/room2_art2.png' hidden/>
+      <img id='room2_art3.png' src='img/room2_art3.png' hidden/>
+      <img id='room3_art1.png' src='img/room3_art1.png' hidden/>
+      <img id='room3_art2.png' src='img/room3_art2.png' hidden/>
+      <img id='room3_art3.png' src='img/room3_art3.png' hidden/>
+      <img id='room3_art4.png' src='img/room3_art4.png' hidden/>
+      <img id='room3_art5.png' src='img/room3_art5.png' hidden/>
+      
+      <audio id='door.wav' src='img/door.wav' hidden/>
+      <audio id='shove.ogg' src='img/shove.ogg' hidden/>
+    
+
+    </body>
+
+</html>
